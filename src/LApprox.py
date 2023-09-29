@@ -6,14 +6,17 @@ from scipy import spatial
 
 
 def NDeriv_2(func, x0, dim1, dim2, **kwargs):
-    '''
-    Numerically calculate the second derivative of a function
-    func: python function
-    x0: point at which to calculate the derivative, N dimensional
-    dim1: which dimension to take the first partial derivative of
-    dim2: which dimension to take the second partial derivative of
-    optional_args: list of optional arguments for the function
-    eps: epsilon, the width of the numerical derivative estimate. Make sure it's smaller than all the parameters
+    '''Numerically calculate the second partial derivative of a function
+
+    Args:
+        func (function): python function to calculate the derivitive of with dimension N
+        x0 (array): point at which to calculate the derivative, N dimensional
+        dim1 (int): which dimension to take the first partial derivative of
+        dim2 (int): which dimension to take the second partial derivative of
+        kwargs: keyword arguments
+
+    Return:
+        float: numerical second partial derivative with respect to dimensions one and two
     '''
 
     try:
@@ -67,47 +70,54 @@ def NDeriv_2(func, x0, dim1, dim2, **kwargs):
     #else:
     out = (func_upup - func_updown - func_downup + func_downdown)/(4*dim1adj*dim2adj)
 
-
-
     return out
 
 def Calculate_Hessian(func, vals, **kwargs):
-    '''
-    Function to calculate the Hessian Matrix of an RV likelihood
+    '''Function to calculate the Hessian Matrix of a generic function
+
+    Args:
+        func (function): Python function to estimate the Hessian matrix of, N dimensional
+        vals (array): numpy array of length N. The point at which to estimate the matrix of second derivatives
+        kwargs: keyword arguments
+    Returns:
+        array: numpy array, Hessian of the function func. Shape NxN.
     '''
     Hessian = np.zeros([len(vals), len(vals)])
     for i in range(len(vals)):
         for j in range(len(vals)):
             Hessian[i][j] += (NDeriv_2(func, vals, i, j, **kwargs))
-    print(Hessian)
 
     return np.array(Hessian)
 
 
 
 def Laplace_Approximation(func, x0, **kwargs):
-    '''
-    Calculate the Laplace Approximation:
+    r'''Calculate the Laplace Approximation of an integral of specific form.
 
-        Z = Integral(Exp(f(x))dx)
+    A challenging integral, when possible to write in terms of an exponent:
+        .. math::
+            Z = \int(exp(f(x))dx)
 
-    Can be estimate as approximately:
+    Can be estimated as approximately:
 
-        [(2pi)^2/(|det(H(x0)))]^(1/2) * exp(f(x0))
+        .. math::
+            [\frac{(2\pi)^{2}}{det|H(x_{0})|}]^{\frac{1}{2}} * exp(f(x_{0}))
+
+    where H is the functions Hessian matrix, and x0 is a region of high probability.
 
     Arguments:
+        func (function): python function, f(x), in the exponent of the term we wish to estimate. Note that this is NOT
+            the total function that we are trying to integrate, but f(x), in the exponent.
 
-        func: the function, f(x), in the exponent of the term we wish to estimate
-
-        x0: the local maximum around which to compute the approxmation
+        x0 (array): numpy array of N values, where the function is N-dimensional. This is the
+            local maximum around which to compute the approxmation. When done correctly, one should optimize a function
+            first before finding the Laplace Approximation.
 
     Returns:
-
-        A: exp(f(x0))
-
-        B: The term added by Laplace's approximation involving the Hessian Matrix
-
-
+        (tuple): logA (float) and logB (float). logA = f(x0), where exp(f(x0)) is A. We return the logarithm because, in practice, many functions we wish
+        to calculate the Laplace Approximation for return very small or very large values that can overflow a computer's
+        floating point precision. The term added by Laplace's approximation involving the Hessian Matrix, [(2\pi)^2/(det|H(x_{0})|)]^1/2
+        where we take the logarithm for consistency with A.
     '''
 
     logA = func(x0, **kwargs)

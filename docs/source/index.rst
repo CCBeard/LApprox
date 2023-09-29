@@ -10,6 +10,8 @@ Welcome to LApprox's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   LApprox.rst
+
 LApprox is a lightweight python module intended to help when calculating the Laplace Approximation on a variety of models.
 
 What is the Laplace Approximation?

@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>LApprox Functions &#8212; LApprox 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to LApprox’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="lapprox-functions">
+<span id="lapprox"></span><h1>LApprox Functions<a class="headerlink" href="#lapprox-functions" title="Permalink to this headline">¶</a></h1>
+<p>Calculate the Laplace Approximation</p>
+<span class="target" id="module-LApprox"></span><dl class="py function">
+<dt class="sig sig-object py" id="LApprox.Calculate_Hessian">
+<span class="sig-prename descclassname"><span class="pre">LApprox.</span></span><span class="sig-name descname"><span class="pre">Calculate_Hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LApprox.Calculate_Hessian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to calculate the Hessian Matrix of a generic function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>function</em>) – Python function to estimate the Hessian matrix of, N dimensional</p></li>
+<li><p><strong>vals</strong> (<em>array</em>) – numpy array of length N. The point at which to estimate the matrix of second derivatives</p></li>
+<li><p><strong>kwargs</strong> – keyword arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array, Hessian of the function func. Shape NxN.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LApprox.Laplace_Approximation">
+<span class="sig-prename descclassname"><span class="pre">LApprox.</span></span><span class="sig-name descname"><span class="pre">Laplace_Approximation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LApprox.Laplace_Approximation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Laplace Approximation of an integral of specific form.</p>
+<dl>
+<dt>A challenging integral, when possible to write in terms of an exponent:</dt><dd><div class="math notranslate nohighlight">
+\[Z = \int(exp(f(x))dx)\]</div>
+</dd>
+</dl>
+<p>Can be estimated as approximately:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[[\frac{(2\pi)^{2}}{det|H(x_{0})|}]^{\frac{1}{2}} * exp(f(x_{0}))\]</div>
+</div></blockquote>
+<p>where H is the functions Hessian matrix, and x0 is a region of high probability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>function</em>) – python function, f(x), in the exponent of the term we wish to estimate. Note that this is NOT
+the total function that we are trying to integrate, but f(x), in the exponent.</p></li>
+<li><p><strong>x0</strong> (<em>array</em>) – numpy array of N values, where the function is N-dimensional. This is the
+local maximum around which to compute the approxmation. When done correctly, one should optimize a function
+first before finding the Laplace Approximation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>logA (float) and logB (float). logA = f(x0), where exp(f(x0)) is A. We return the logarithm because, in practice, many functions we wish
+to calculate the Laplace Approximation for return very small or very large values that can overflow a computer’s
+floating point precision. The term added by Laplace’s approximation involving the Hessian Matrix, [(2pi)^2/(det|H(x_{0})|)]^1/2
+where we take the logarithm for consistency with A.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(tuple)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="LApprox.NDeriv_2">
+<span class="sig-prename descclassname"><span class="pre">LApprox.</span></span><span class="sig-name descname"><span class="pre">NDeriv_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#LApprox.NDeriv_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numerically calculate the second partial derivative of a function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>function</em>) – python function to calculate the derivitive of with dimension N</p></li>
+<li><p><strong>x0</strong> (<em>array</em>) – point at which to calculate the derivative, N dimensional</p></li>
+<li><p><strong>dim1</strong> (<em>int</em>) – which dimension to take the first partial derivative of</p></li>
+<li><p><strong>dim2</strong> (<em>int</em>) – which dimension to take the second partial derivative of</p></li>
+<li><p><strong>kwargs</strong> – keyword arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numerical second partial derivative with respect to dimensions one and two</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">LApprox</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">LApprox Functions</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to LApprox’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Corey Beard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/LApprox.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
