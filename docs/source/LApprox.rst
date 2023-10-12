@@ -6,3 +6,6 @@ LApprox Functions
 Calculate the Laplace Approximation
 
 This is a test.
+
+.. automodule:: LApprox
+   :members:
