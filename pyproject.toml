@@ -34,6 +34,3 @@ python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 # Define development dependencies here
-
-[build-system]
-requires = ["setuptools", "wheel"]
