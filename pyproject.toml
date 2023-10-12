@@ -29,7 +29,6 @@ description = "A brief description of your project"
 authors = ["Your Name <your@email.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
 # Define your project's dependencies here
 
 [tool.poetry.dev-dependencies]
