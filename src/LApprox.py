@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import radvel
 from scipy import spatial
 
 
