@@ -1,8 +1,8 @@
 # pyproject.toml
 
-[build-system]
+[tool.pep517.build-system]
 # A table that specifies the build backend and required version
-requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython"]
+requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython", "pep517"]
 build-backend = "setuptools.build_meta"
 
 [tool.sphinx]  # If you are using Sphinx for documentation
