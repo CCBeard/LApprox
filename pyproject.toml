@@ -2,7 +2,7 @@
 
 [build-system]
 # A table that specifies the build backend and required version
-requires = ["setuptools>=46.4.0", "wheel", "sphinx"]
+requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython"]
 build-backend = "setuptools.build_meta"
 
 [tool.sphinx]  # If you are using Sphinx for documentation
