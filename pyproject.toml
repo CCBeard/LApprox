@@ -1,1 +1,35 @@
-test
+# pyproject.toml
+
+[tool.pep517.build-system]
+# A table that specifies the build backend and required version
+requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython", "pep517"]
+build-backend = "setuptools.build_meta"
+
+[tool.sphinx]  # If you are using Sphinx for documentation
+# Sphinx configuration options
+project = "LApprox"
+author = "Corey Beard"
+version = "1.0.0"
+release = "0.1.0"
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    # Add other Sphinx extensions here
+]
+source-dir = "docs/source"
+build-dir = "docs/build"
+config-dir = "docs/source"
+output-dir = "docs/build/html"
+# Additional Sphinx configuration options go here
+
+[tool.poetry]  # If you are using Poetry for package management
+name = "LApprox"
+version = "0.1.0"
+description = "A brief description of your project"
+authors = ["Your Name <your@email.com>"]
+
+[tool.poetry.dependencies]
+# Define your project's dependencies here
+
+[tool.poetry.dev-dependencies]
+# Define development dependencies here
