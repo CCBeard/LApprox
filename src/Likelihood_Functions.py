@@ -59,7 +59,7 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
 
 
 
-    data = pd.read_csv(filename,sep=',')
+    data = pd.read_csv(filename,sep=' ')
 
     t = np.array(data.time)
     vel = np.array(data.mnvel)
@@ -106,29 +106,31 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
     params['curv'] = radvel.Parameter(value=val_dict['curv'],vary=vary_dict['curv']) #curvature term
 
     if GP:
-        if kernel == 'QP':
-            params['gp_amp'] = radvel.Parameter(value=val_dict['gp_amp'],vary=vary_dict['gp_amp']) #GP amplitude
-            params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
-            params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
-            params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
-        elif kernel == 'KJ2':
-            params['gp_amp0'] = radvel.Parameter(value=val_dict['gp_amp0'],vary=vary_dict['gp_amp0']) #GP amplitude
-            params['gp_amplambda'] = radvel.Parameter(value=val_dict['gp_amplambda'],vary=vary_dict['gp_amplambda']) #Wavelength Scaling
-            params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
-            params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
-            params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
-        elif kernel == 'KJ1':
-            params['gp_amp_hires_pre'] = radvel.Parameter(value=val_dict['gp_amp_hires_pre'],vary=vary_dict['gp_amp_hires_pre']) #GP amplitude
-            params['gp_amp_hires_post'] = radvel.Parameter(value=val_dict['gp_amp_hires_post'],vary=vary_dict['gp_amp_hires_post']) #GP amplitude
-            params['gp_amp_carmenes'] = radvel.Parameter(value=val_dict['gp_amp_carmenes'],vary=vary_dict['gp_amp_carmenes']) #GP amplitude
-            params['gp_amp_hpf_pre'] = radvel.Parameter(value=val_dict['gp_amp_hpf_pre'],vary=vary_dict['gp_amp_hpf_pre']) #GP amplitude
-            params['gp_amp_hpf_post'] = radvel.Parameter(value=val_dict['gp_amp_hpf_post'],vary=vary_dict['gp_amp_hpf_post']) #GP amplitude
-            params['gp_amp_NEID'] = radvel.Parameter(value=val_dict['gp_amp_NEID'],vary=vary_dict['gp_amp_NEID']) #GP amplitude
-            params['gp_amp_NEID_post'] = radvel.Parameter(value=val_dict['gp_amp_NEID_post'],vary=vary_dict['gp_amp_NEID_post']) #GP amplitude
-            params['gp_amp_spirou'] = radvel.Parameter(value=val_dict['gp_amp_spirou'],vary=vary_dict['gp_amp_spirou']) #GP amplitude
-            params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
-            params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
-            params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
+        for key in hparam_dict.keys():
+            params[key] = radvel.Parameter(value=val_dict[key], vary=vary_dict[key])
+        # if kernel == 'QP':
+        #     params['gp_amp'] = radvel.Parameter(value=val_dict['gp_amp'],vary=vary_dict['gp_amp']) #GP amplitude
+        #     params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
+        #     params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
+        #     params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
+        # elif kernel == 'KJ2':
+        #     params['gp_amp0'] = radvel.Parameter(value=val_dict['gp_amp0'],vary=vary_dict['gp_amp0']) #GP amplitude
+        #     params['gp_amplambda'] = radvel.Parameter(value=val_dict['gp_amplambda'],vary=vary_dict['gp_amplambda']) #Wavelength Scaling
+        #     params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
+        #     params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
+        #     params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
+        # elif kernel == 'KJ1':
+        #     params['gp_amp_hires_pre'] = radvel.Parameter(value=val_dict['gp_amp_hires_pre'],vary=vary_dict['gp_amp_hires_pre']) #GP amplitude
+        #     params['gp_amp_hires_post'] = radvel.Parameter(value=val_dict['gp_amp_hires_post'],vary=vary_dict['gp_amp_hires_post']) #GP amplitude
+        #     params['gp_amp_carmenes'] = radvel.Parameter(value=val_dict['gp_amp_carmenes'],vary=vary_dict['gp_amp_carmenes']) #GP amplitude
+        #     params['gp_amp_hpf_pre'] = radvel.Parameter(value=val_dict['gp_amp_hpf_pre'],vary=vary_dict['gp_amp_hpf_pre']) #GP amplitude
+        #     params['gp_amp_hpf_post'] = radvel.Parameter(value=val_dict['gp_amp_hpf_post'],vary=vary_dict['gp_amp_hpf_post']) #GP amplitude
+        #     params['gp_amp_NEID'] = radvel.Parameter(value=val_dict['gp_amp_NEID'],vary=vary_dict['gp_amp_NEID']) #GP amplitude
+        #     params['gp_amp_NEID_post'] = radvel.Parameter(value=val_dict['gp_amp_NEID_post'],vary=vary_dict['gp_amp_NEID_post']) #GP amplitude
+        #     params['gp_amp_spirou'] = radvel.Parameter(value=val_dict['gp_amp_spirou'],vary=vary_dict['gp_amp_spirou']) #GP amplitude
+        #     params['gp_per'] = radvel.Parameter(value=val_dict['gp_per'],vary=vary_dict['gp_per']) #GP period
+        #     params['gp_explength'] = radvel.Parameter(value=val_dict['gp_explength'],vary=vary_dict['gp_explength']) #GP explength
+        #     params['gp_perlength'] = radvel.Parameter(value=val_dict['gp_perlength'],vary=vary_dict['gp_perlength']) #GP perlength
 
     for tel_suffix in instnames:
         params['gamma_'+tel_suffix] = radvel.Parameter(value=val_dict['gamma_'+tel_suffix], vary=vary_dict['gamma_'+tel_suffix])

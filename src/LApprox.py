@@ -23,6 +23,11 @@ def NDeriv_2(func, x0, dim1, dim2, **kwargs):
         eps = kwargs['eps']
     except KeyError:
         eps = 1e-5
+    try:
+        priors = kwargs['priors']
+        key = list(priors.keys())
+    except KeyError:
+        priors = None
 
 
     x_upup = x0.copy()
@@ -33,9 +38,32 @@ def NDeriv_2(func, x0, dim1, dim2, **kwargs):
     x_downsame = x0.copy()
 
     #scale the parameter adjustment by dimension, but this fails if it is exactly zero
-    dim1adj = eps/2
-    dim2adj = eps/2
+    if priors is None:
+        scale1 = 1. #just use eps values
+        scale2 = 1.
+    else:
+        prior1 = priors[key[dim1]]
+        prior2 = priors[key[dim2]]
+        if prior1[0] == 'Gaussian':
+            scale1 = prior1[1] #the mean
+        elif prior1[0] == 'Uniform':
+            scale1 = (prior1[2] - prior1[1])/2
+        elif prior1[0] == 'Jeffreys':
+            scale1 = (prior1[2] - prior1[1])/2
 
+        if prior2[0] == 'Gaussian':
+            scale2 = prior2[1] #the mean
+        elif prior2[0] == 'Uniform':
+            scale2 = (prior2[2] - prior2[1])/2
+        elif prior2[0] == 'Jeffreys':
+            scale2 = (prior2[2] - prior2[1])/2
+
+    if scale1 == 0:
+        scale1 = 1
+    if scale2 == 0:
+        scale2 = 1
+    dim1adj = eps/2*scale1
+    dim2adj = eps/2*scale2
 
     #For mixed second derivitives
     x_upup[dim1] += dim1adj
