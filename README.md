@@ -1,7 +1,7 @@
 # LApprox
 Lightweight package for utilizing the Laplace Approximation to compare Bayesian models.
 
-![LA](LA.png)
+<img src="LA.png" alt="LA" width="200"/>
 
 
 Project documentation can be found here: [LApprox Documentation](https://lapprox.readthedocs.io/en/latest/index.html)
