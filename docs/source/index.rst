@@ -11,6 +11,7 @@ Welcome to LApprox's documentation!
    :caption: Contents:
 
    LApprox.rst
+   Likelihood_Functions.rst
 
 LApprox is a lightweight python module intended to help when calculating the Laplace Approximation on a variety of models.
 
