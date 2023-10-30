@@ -9,4 +9,4 @@ matplotlib==3.3.4
 astropy==5.2.1
 scipy==1.10.0
 pip==22.1
-radvel==1.4.7
+radvel==1.4.7 --use-pep517
