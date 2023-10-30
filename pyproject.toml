@@ -3,7 +3,7 @@
 [tool.pep517.build-system]
 # A table that specifies the build backend and required version
 requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython", "pep517"]
-build-backend = "setuptools.build_meta"
+build-backend = "packager.pep517"
 
 [tool.sphinx]  # If you are using Sphinx for documentation
 # Sphinx configuration options
