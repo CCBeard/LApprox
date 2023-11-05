@@ -64,6 +64,8 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
     t = np.array(data.time)
     vel = np.array(data.mnvel)
     errvel = np.array(data.errvel)
+
+    time_base = np.min(t) #add a reference time for curvature
     try:
         tel_arr = np.array(data.tel)
         telgrps = data.groupby('tel').groups
@@ -136,7 +138,7 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
         params['gamma_'+tel_suffix] = radvel.Parameter(value=val_dict['gamma_'+tel_suffix], vary=vary_dict['gamma_'+tel_suffix])
         params['jit_'+tel_suffix] = radvel.Parameter(value=val_dict['jit_'+tel_suffix], vary=vary_dict['jit_'+tel_suffix])
 
-    model = radvel.model.RVModel(params) #combine all the parameters into a Keplerian model under the hood
+    model = radvel.model.RVModel(params, time_base=time_base) #combine all the parameters into a Keplerian model under the hood
 
     likes = [] #a list of likelihoods for each instrument
 
