@@ -50,11 +50,10 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
         optimizing = kwargs['optimizing']
     except KeyError:
         optimizing = False
-
     try:
-	data = kwargs['dataframe']
+        data = kwargs['dataframe']
     except KeyError:
-	data = None
+        data = None
 
     #update the value dictionary to have the latest values of vals
     counter = 0
