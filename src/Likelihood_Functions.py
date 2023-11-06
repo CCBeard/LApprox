@@ -51,6 +51,11 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
     except KeyError:
         optimizing = False
 
+    try:
+	data = kwargs['dataframe']
+    except KeyError:
+	data = None
+
     #update the value dictionary to have the latest values of vals
     counter = 0
     for key in priors.keys(): #ensures they are the varying Parameters
@@ -58,8 +63,8 @@ def Calculate_Likelihood_RadVel(vals, **kwargs):
         counter += 1
 
 
-
-    data = pd.read_csv(filename,sep=' ')
+    if data is None:
+        data = pd.read_csv(filename,sep=' ')
 
     t = np.array(data.time)
     vel = np.array(data.mnvel)
