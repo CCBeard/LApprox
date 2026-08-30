@@ -1,35 +1,49 @@
-# pyproject.toml
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.pep517.build-system]
-# A table that specifies the build backend and required version
-requires = ["setuptools>=46.4.0", "wheel", "sphinx", "Cython", "pep517"]
-build-backend = "packager.pep517"
-
-[tool.sphinx]  # If you are using Sphinx for documentation
-# Sphinx configuration options
-project = "LApprox"
-author = "Corey Beard"
-version = "1.0.0"
-release = "0.1.0"
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
-    # Add other Sphinx extensions here
-]
-source-dir = "docs/source"
-build-dir = "docs/build"
-config-dir = "docs/source"
-output-dir = "docs/build/html"
-# Additional Sphinx configuration options go here
-
-[tool.poetry]  # If you are using Poetry for package management
-name = "LApprox"
+[project]
+name = "lapprox"
 version = "0.1.0"
-description = "A brief description of your project"
-authors = ["Your Name <your@email.com>"]
+description = "Lightweight Laplace approximation for Bayesian model comparison."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Corey Beard", email = "coreycbeard@gmail.com" }]
+keywords = ["laplace-approximation", "bayesian", "model-comparison", "evidence", "astronomy"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = ["numpy", "scipy"]
 
-[tool.poetry.dependencies]
-# Define your project's dependencies here
+[project.optional-dependencies]
+rv = ["pandas", "radvel"]
+docs = ["sphinx", "sphinx-rtd-theme"]
+dev = ["pytest", "ruff", "lapprox[docs]"]
 
-[tool.poetry.dev-dependencies]
-# Define development dependencies here
+[project.urls]
+Homepage = "https://github.com/CCBeard/LApprox"
+Documentation = "https://lapprox.readthedocs.io"
+Repository = "https://github.com/CCBeard/LApprox"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+extend-exclude = ["*.ipynb", "docs/build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
